@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   createTheme,
   Container,
@@ -22,17 +22,18 @@ function App() {
       type: 'dark'
     }
   });
-  const getWord = (e, incoming) => {
-    e.preventDefault();
-    const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + incoming;
-    console.log('getting word');
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data[0].meanings);
-        setMeanings(data[0].meanings);
-        // setAudio(data[0].phonetics[0].audio);
-      });
+  const getWord = () => {
+    const url = `https://api.dictionaryapi.dev/api/v2/entries/${language}/${word}`;
+    if (word !== '') {
+      console.log(`inside getting : ${word}`);
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data[0].meanings);
+          // setMeanings(data[0].meanings);
+          // setAudio(data[0].phonetics[0].audio);
+        });
+    }
   };
 
   const handleLanguageChange = (newLanguage) => {
@@ -42,6 +43,7 @@ function App() {
     setLanguage(newLanguage);
   };
 
+  useEffect(() => getWord(), [word]);
   return (
     <div className='App'>
       <ThemeProvider theme={darkTheme}>
