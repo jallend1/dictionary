@@ -7,6 +7,7 @@ import {
   ThemeProvider
 } from '@material-ui/core';
 import Header from './Components/Header';
+import Definitions from './Components/Definitions';
 
 function App() {
   const [language, setLanguage] = useState('en');
@@ -23,15 +24,25 @@ function App() {
     }
   });
   const getWord = () => {
-    const url = `https://api.dictionaryapi.dev/api/v2/entries/${language}/${word}`;
+    console.log(word);
     if (word !== '') {
-      console.log(`inside getting : ${word}`);
+      const url = `https://api.dictionaryapi.dev/api/v2/entries/${language}/${word}`;
       fetch(url)
-        .then((res) => res.json())
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw new Error(res.status);
+          }
+        })
         .then((data) => {
-          console.log(data[0].meanings);
-          // setMeanings(data[0].meanings);
+          data[0].meanings
+            ? setMeanings(data[0].meanings)
+            : setMeanings(['Word not found :(']);
           // setAudio(data[0].phonetics[0].audio);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     }
   };
@@ -66,7 +77,7 @@ function App() {
                 <MenuItem value='ja'>Japanese</MenuItem>
               </TextField>
             </div>
-            <h2>Definition:</h2>
+            {meanings && <Definitions word={word} meanings={meanings} />}
           </main>
         </Container>
       </ThemeProvider>
