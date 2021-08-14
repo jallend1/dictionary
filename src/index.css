@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.App {
+  height: 100vh;
+  background-color: #282c34;
+  color: #eee;
+}
+
+header {
+  display: flex;
+  height: 20vh;
+  width: 100%;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 5vw;
+  text-transform: uppercase;
+}
