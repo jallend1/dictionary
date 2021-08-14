@@ -2,10 +2,7 @@ import { useState } from 'react';
 import {
   createTheme,
   Container,
-  FormControl,
-  InputLabel,
   MenuItem,
-  Select,
   TextField,
   ThemeProvider
 } from '@material-ui/core';
@@ -28,6 +25,7 @@ function App() {
   const getWord = (e, incoming) => {
     e.preventDefault();
     const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + incoming;
+    console.log('getting word');
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -37,31 +35,36 @@ function App() {
       });
   };
 
+  const handleLanguageChange = (newLanguage) => {
+    setWord('');
+    setMeanings('');
+    setAudio('');
+    setLanguage(newLanguage);
+  };
+
   return (
     <div className='App'>
       <ThemeProvider theme={darkTheme}>
         <Container maxWidth='sm'>
           <Header />
           <main>
-            <FormControl>
-              <InputLabel>Language</InputLabel>
-              <Select
+            <div className='inputs'>
+              <TextField
+                value={word}
+                onChange={(e) => setWord(e.target.value)}
+                className='search'
+              />
+              <TextField
+                className='select'
+                select
                 value={language}
-                onChange={(e) => setLanguage(e.target.value)}
+                onChange={(e) => handleLanguageChange(e.target.value)}
               >
                 <MenuItem value='en'>English</MenuItem>
                 <MenuItem value='ja'>Japanese</MenuItem>
-              </Select>
-            </FormControl>
-            <div>
-              <form onSubmit={(e) => getWord(e, word)}>
-                <TextField
-                  value={word}
-                  onChange={(e) => setWord(e.target.value)}
-                />
-              </form>
-              <h2>Definition:</h2>
+              </TextField>
             </div>
+            <h2>Definition:</h2>
           </main>
         </Container>
       </ThemeProvider>
