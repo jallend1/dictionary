@@ -24,7 +24,6 @@ function App() {
     }
   });
   const getWord = () => {
-    console.log(word);
     if (word !== '') {
       const url = `https://api.dictionaryapi.dev/api/v2/entries/${language}/${word}`;
       fetch(url)
@@ -38,11 +37,12 @@ function App() {
         .then((data) => {
           data[0].meanings
             ? setMeanings(data[0].meanings)
-            : setMeanings(['Word not found :(']);
+            : setMeanings([]);
           // setAudio(data[0].phonetics[0].audio);
         })
         .catch((err) => {
           console.log(err);
+          setMeanings([]);
         });
     }
   };
