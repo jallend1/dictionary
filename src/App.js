@@ -35,18 +35,19 @@ function App() {
           }
         })
         .then((data) => {
-          data[0].meanings
-            ? setMeanings(data[0].meanings)
-            : setMeanings([]);
-          // setAudio(data[0].phonetics[0].audio);
+          data[0].meanings ? setMeanings(data[0].meanings) : setMeanings([]);
+          data[0].phonetics[0].audio
+            ? setAudio(data[0].phonetics[0].audio)
+            : setAudio('');
         })
         .catch((err) => {
           console.log(err);
           setMeanings([]);
+          setAudio('');
         });
-    }
-    else{
-      setMeanings([])
+    } else {
+      setMeanings([]);
+      setAudio('');
     }
   };
 
@@ -81,6 +82,11 @@ function App() {
                 <MenuItem value='ja'>Japanese</MenuItem>
               </TextField>
             </div>
+            {audio !== '' ? (
+              <div>
+                <audio src={audio} controls></audio>
+              </div>
+            ) : null}
             {meanings && <Definitions word={word} meanings={meanings} />}
           </main>
         </Container>
