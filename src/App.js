@@ -45,6 +45,9 @@ function App() {
           setMeanings([]);
         });
     }
+    else{
+      setMeanings([])
+    }
   };
 
   const handleLanguageChange = (newLanguage) => {
@@ -54,7 +57,8 @@ function App() {
     setLanguage(newLanguage);
   };
 
-  useEffect(() => getWord(), [word]);
+  useEffect(getWord, [word, language]);
+
   return (
     <div className='App'>
       <ThemeProvider theme={darkTheme}>
